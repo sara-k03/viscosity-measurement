@@ -8,11 +8,6 @@ per-frame displacement at each frame rate:
     D  = kT / (6 * pi * eta * a)          Stokes-Einstein
     dr = sqrt(4 * D * dt)                 2D per-frame RMS displacement
 
-Edit MEDIA and FRAME_RATES_HZ below to match your lab setup.
-
-Usage:
-    python3 particle_displacement.py
-    (then enter the diameter in microns when prompted)
 """
 
 import math
