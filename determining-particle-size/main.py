@@ -20,8 +20,6 @@ import math
 k_B = 1.380649e-23  # Boltzmann constant, J/K
 
 
-# ---- Edit these to match your setup --------------------------------------
-
 # name -> dynamic viscosity in Pa*s at the given temperature
 MEDIA = {
     "Water":    0.89e-3,   # Pa*s at 25 C
@@ -30,8 +28,6 @@ MEDIA = {
 
 TEMPERATURE_C = 25.0
 FRAME_RATES_HZ = [10, 50]
-
-# ----------------------------------------------------------------------------
 
 
 def diffusion_coefficient(radius_m: float, eta_pa_s: float, temp_k: float) -> float:
