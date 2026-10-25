@@ -12,7 +12,7 @@ K_B = 1.380649e-23            # Boltzmann constant (J/K)
 
 # Lag definition: How many frames apart two positions of the same bead are
 MAX_LAG = 10      # longest lag (in frames) to calculate
-FIT_LAGS = 4      # fit D using only the first few (most reliable) lags
+FIT_LAGS = 4      # fit D using only the first few lags
 MIN_COUNT = 10    # skip lags with fewer displacements than this
 
 folder = Path(__file__).parent   # folder this script is in (file paths below are relative to it)
@@ -79,6 +79,7 @@ for name, file_list in files.items():       # run the analysis once per conditio
 
     # Fit a line MSD = 4 D tau + offset to the first few lags (points with smaller error count more)
     # Weight by 1/error
+    # Offset is the y-intercept
     (slope, offset), cov = np.polyfit(tau[:FIT_LAGS], msd[:FIT_LAGS], 1, w=1 / err[:FIT_LAGS], cov="unscaled")
     D = slope / 4                       # µm²/s (in 2D, slope = 4D)
     D_err = np.sqrt(cov[0, 0]) / 4      # uncertainty in D from the fit
@@ -97,7 +98,7 @@ for name, file_list in files.items():       # run the analysis once per conditio
     print(f"  alpha     = {alpha:.2f}")
 
     # Plot the MSD with its fit line, and the same data on log-log axes
-    points = ax_lin.errorbar(tau, msd, yerr=err, fmt="o", capsize=3, label=f"{name}: D = {D:.3f} µm²/s")   # MSD points with error bars
+    points = ax_lin.errorbar(tau, msd, yerr=err, fmt="o", capsize=3, label=f"{name}: D = {D:.3f} µm²/s, η = {viscosity * 1e3:.2f} mPa·s")   # MSD points with error bars
     color = points[0].get_color()                                   # reuse the same color for this condition's fit line
     fit_t = np.linspace(0, tau[FIT_LAGS - 1], 50)                   # x values for the fit line (only over the fitted lags)
     ax_lin.plot(fit_t, slope * fit_t + offset, "-", color=color)    # draw the fit line
